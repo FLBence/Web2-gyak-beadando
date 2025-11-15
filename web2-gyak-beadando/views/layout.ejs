@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Beadandó</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+    <% if (typeof page === "undefined") { var page = ""; } %>
+    <div id="wrapper">
+
+        <div id="main">
+            <article>
+                <%- body %>
+            </article>
+        </div>
+
+        <footer id="footer">
+            <p>&copy; Beadandó · Dimension by HTML5 UP</p>
+        </footer>
+
+    </div>
+
+<% if (page !== 'login' && page !== 'register') { %>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <!-- <script src="/assets/js/main.js"></script> -->
+<% } %>
+</body>
+</html>

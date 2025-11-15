@@ -1,0 +1,24 @@
+    <h1 id="maintitle">Beadandó</h1>
+
+    <nav id="mainMenu">
+        <a href="/">Főoldal</a>
+        <a href="/adatbazis">Adatbázis</a>
+        <a href="/kapcsolat">Kapcsolat</a>
+        <a href="/crud">CRUD</a>
+    </nav>
+    
+    <div id="userMenu">
+        <% if (!user) { %>
+            <a href="/login">Bejelentkezés</a>
+            <a href="/register">Regisztráció</a>
+        <% } %>
+
+        <% if (user) { %>
+            <a href="/uzenetek">Üzenetek</a>
+            <a href="/logout">Kijelentkezés</a>
+
+            <% if (user.role === "admin") { %>
+                <a href="/admin">Admin</a>
+            <% } %>
+        <% } %>
+    </div>

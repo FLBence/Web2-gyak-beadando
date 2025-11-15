@@ -1,0 +1,8 @@
+<h2>Admin felület</h2>
+<p>Ez az oldal csak admin felhasználónak jelenik meg.</p>
+
+<ul>
+    <% users.forEach(u => { %>
+        <li><%= u.username %> — <%= u.role %></li>
+    <% }) %>
+</ul>
