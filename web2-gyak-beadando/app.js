@@ -1,4 +1,6 @@
 const express = require("express");
+const fs = require('fs');
+const path = require('path');
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const expressLayouts = require("express-ejs-layouts");
@@ -14,19 +16,17 @@ app.set("layout", "layout");
 app.use("/assets", express.static("assets"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.json());
+const DATA_FILE = path.join(__dirname, 'users.json');
+if (!fs.existsSync(DATA_FILE)) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify([]));
+}
 // Session settings
 app.use(session({
     secret: "nagyon_titkos_kulcs",
     resave: false,
     saveUninitialized: true
 }));
-
-// Simple in-memory user database (beadandóhoz bőven elég)
-let users = [
-    { username: "admin", password: "admin", role: "admin" },
-    { username: "teszt", password: "teszt", role: "user" }
-];
 
 // Middleware – login required
 function requireLogin(req, res, next) {
@@ -62,16 +62,23 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-    const { username, password } = req.body;
+    console.log("Bejövő POST:", req.body);
 
-    // új felhasználó létrehozása
-    users.push({
+    const { username, password } = req.body;
+    const users = JSON.parse(fs.readFileSync(DATA_FILE));
+
+    const newUser = {
+        id: Date.now(),
         username,
         password,
         role: "user"
-    });
+    };
 
-    // automatikus bejelentkezés
+    users.push(newUser);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(users, null, 2));
+
+    console.log("Mentve JSON-be!");
+
     req.session.user = {
         username,
         role: "user"
@@ -79,6 +86,7 @@ app.post("/register", (req, res) => {
 
     res.redirect("/");
 });
+
 
 // Bejelentkezés
 app.get("/login", (req, res) => {
@@ -91,19 +99,13 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
-    const found = users.find(u =>
-        u.username === username && u.password === password
+    const users = JSON.parse(fs.readFileSync(DATA_FILE));
+    const user = users.find(
+        u => u.username === username && u.password === password
     );
-
-    if (!found) {
-        return res.send("Hibás felhasználónév vagy jelszó!");
+    if (!user) {
+        return res.status(401).send("Hibás felhasználónév vagy jelszó!");
     }
-
-    req.session.user = {
-        username: found.username,
-        role: found.role
-    };
-
     res.redirect("/");
 });
 
