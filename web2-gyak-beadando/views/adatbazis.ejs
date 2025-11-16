@@ -1,1 +1,84 @@
-<h2>Adatbázis fül</h2>
+<h1>Adatbázis- Forma-1</h1>
+
+
+<div class="columns">
+
+    
+    <div class="column-box">
+        <h2>PILÓTÁK</h2>
+        <div class="scroll-box">
+            <table border="1">
+                <tr>
+                    <th>az</th>
+                    <th>név</th>
+                    <th>nem</th>
+                    <th>szül</th>
+                    <th>nemzet</th>
+                </tr>
+
+                <% pilotak.forEach(p => { %>
+                    <tr>
+                        <td><%= p.az %></td>
+                        <td><%= p.nev %></td>
+                        <td><%= p.nem %></td>
+                        <td><%= p.szuldat %></td>
+                        <td><%= p.nemzet %></td>
+                    </tr>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+
+    
+    <div class="column-box">
+        <h2>GP-K</h2>
+        <div class="scroll-box">
+            <table border="1">
+                <tr>
+                    <th>dátum</th>
+                    <th>név</th>
+                    <th>helyszín</th>
+                </tr>
+
+                <% gp.forEach(g => { %>
+                    <tr>
+                        <td><%= g.datum %></td>
+                        <td><%= g.nev %></td>
+                        <td><%= g.helyszin %></td>
+                    </tr>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+
+    
+    <div class="column-box">
+        <h2>EREDMÉNYEK</h2>
+        <div class="scroll-box">
+            <table border="1">
+                <tr>
+                    <th>dátum</th>
+                    <th>pilóta</th>
+                    <th>helyezés</th>
+                    <th>hiba</th>
+                    <th>csapat</th>
+                    <th>típus</th>
+                    <th>motor</th>
+                </tr>
+
+                <% eredmeny.forEach(e => { %>
+                    <tr>
+                        <td><%= e.datum %></td>
+                        <td><%= e.pilotaaz %></td>
+                        <td><%= e.helyezes %></td>
+                        <td><%= e.hiba %></td>
+                        <td><%= e.csapat %></td>
+                        <td><%= e.tipus %></td>
+                        <td><%= e.motor %></td>
+                    </tr>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+
+</div>

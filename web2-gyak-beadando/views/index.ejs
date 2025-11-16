@@ -3,7 +3,6 @@
     <nav id="mainMenu">
         <a href="/">Főoldal</a>
         <a href="/adatbazis">Adatbázis</a>
-        <a href="/kapcsolat">Kapcsolat</a>
         <a href="/crud">CRUD</a>
     </nav>
     
@@ -15,6 +14,7 @@
 
         <% if (user) { %>
             <a href="/uzenetek">Üzenetek</a>
+            <a href="/kapcsolat">Kapcsolat</a>
             <a href="/logout">Kijelentkezés</a>
 
             <% if (user.role === "admin") { %>

@@ -10,5 +10,17 @@
     "username": "teszt",
     "password": "teszt",
     "role": "user"
+  },
+  {
+    "id": 1763300341941,
+    "username": "qwer",
+    "password": "qwer",
+    "role": "user"
+  },
+  {
+    "id": 1763300505251,
+    "username": "qw",
+    "password": "qw",
+    "role": "user"
   }
 ]

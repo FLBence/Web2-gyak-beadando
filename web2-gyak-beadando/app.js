@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const expressLayouts = require("express-ejs-layouts");
 
 const app = express();
+const db = require("./db");
 
 // Template engine
 app.set("view engine", "ejs");
@@ -41,9 +42,77 @@ function requireAdmin(req, res, next) {
     next();
 }
 
+//ADATBÁZIS
+function formatDate(date) {
+    return date.toISOString().split('T')[0];
+}
+
+app.get('/adatbazis', (req, res) => {
+
+    const pilotakQuery = "SELECT * FROM pilota";
+    const gpQuery = "SELECT * FROM gp";
+    const eredQuery = "SELECT * FROM eredmeny";
+
+    db.query(pilotakQuery, (err, pilotak) => {
+        if (err) throw err;
+
+        db.query(gpQuery, (err, gp) => {
+            if (err) throw err;
+
+            db.query(eredQuery, (err, eredmeny) => {
+                if (err) throw err;
+
+                pilotak.forEach(p => p.szuldat = formatDate(p.szuldat));
+                gp.forEach(g => g.datum = formatDate(g.datum));
+                eredmeny.forEach(e => e.datum = formatDate(e.datum));
+
+                res.render('adatbazis', {
+                    pilotak,
+                    gp,
+                    eredmeny,
+                    user: req.session.user,
+                    page: 'adatbazis'
+                });
+            });
+        });
+    });
+});
+
+
 /* ===========================
     ROUTES
 =========================== */
+
+//kapcsolat
+app.post('/kapcsolat', (req, res) => {
+    const { nev, email, uzenet } = req.body;
+
+    const sql = "INSERT INTO uzenetek (nev, email, uzenet) VALUES (?, ?, ?)";
+
+    db.query(sql, [nev, email, uzenet], (err) => {
+        if (err) throw err;
+
+        res.redirect('/uzenetek');
+    });
+});
+
+//Üzenetek
+app.get('/uzenetek', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    const sql = "SELECT * FROM uzenetek ORDER BY kuldve DESC";
+
+    db.query(sql, (err, rows) => {
+        if (err) throw err;
+
+        res.render('uzenetek', {
+            uzenetek: rows,
+            user: req.session.user
+        });
+    });
+});
 
 // Főoldal
 app.get("/", (req, res) => {

@@ -1,2 +1,24 @@
-<h2>Üzenetek</h2>
-<p>Ez az oldal csak bejelentkezett felhasználóknak elérhető.</p>
+<h1>Beérkezett üzenetek</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Név</th>
+        <th>Email</th>
+        <th>Üzenet</th>
+        <th>Küldve</th>
+    </tr>
+
+    <% uzenetek.forEach(u => { %>
+        <tr>
+            <td><%= u.id %></td>
+            <td><%= u.nev %></td>
+            <td><%= u.email %></td>
+            <td><%= u.uzenet %></td>
+            <td><%= u.kuldve.toISOString().slice(0, 16).replace('T', ' ') %></td>
+        </tr>
+    <% }) %>
+</table>
+
+</body>
+</html>
