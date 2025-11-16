@@ -1,0 +1,19 @@
+<h1>Adatok módosítása</h1>
+
+<form action="/crud/edit/<%= pilota.az %>" method="POST">
+    <input type="text" name="nev" value="<%= pilota.nev %>" required>
+        <p></p>
+    <select name="nem" required>
+        <option value="Férfi" <%= pilota.nem === 'Férfi' ? 'selected' : '' %>>Férfi</option>
+        <option value="Nő" <%= pilota.nem === 'Nő' ? 'selected' : '' %>>Nő</option>
+    </select>
+        <p></p>
+    <input type="date" name="szuldat" value="<%= pilota.szuldat %>" style="color: black;" required>
+         <p></p>
+    <input type="text" name="nemzet" value="<%= pilota.nemzet %>" required>
+        <p></p>
+    <button type="submit">Mentés</button>
+</form>
+
+<br>
+<a href="/crud">Vissza</a>

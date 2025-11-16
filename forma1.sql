@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Nov 16. 14:48
--- Kiszolgáló verziója: 10.4.32-MariaDB
--- PHP verzió: 8.2.12
+-- Létrehozás ideje: 2025. Nov 16. 16:53
+-- Kiszolgáló verziója: 10.4.27-MariaDB
+-- PHP verzió: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -3098,7 +3098,7 @@ CREATE TABLE `pilota` (
 --
 
 INSERT INTO `pilota` (`az`, `nev`, `nem`, `szuldat`, `nemzet`) VALUES
-(1, 'Juan-Manuel Fangio', 'F', '1911-06-24', 'argentín'),
+(1, 'Juan-Manuel Fangio', 'F', '1911-06-24', 'Argentín'),
 (2, 'Sam Posey', 'F', '1944-05-26', 'amerikai'),
 (3, 'Ernesto Prinoth', 'F', '1923-01-01', 'olasz'),
 (4, 'Hubert Hahne', 'F', '1935-03-28', 'német'),
@@ -3953,6 +3953,12 @@ ALTER TABLE `uzenetek`
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
 --
+
+--
+-- AUTO_INCREMENT a táblához `pilota`
+--
+ALTER TABLE `pilota`
+  MODIFY `az` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=805;
 
 --
 -- AUTO_INCREMENT a táblához `uzenetek`

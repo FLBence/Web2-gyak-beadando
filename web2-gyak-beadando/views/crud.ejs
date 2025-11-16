@@ -1,1 +1,47 @@
-<h2>CRUD fül</h2>
+<a id="back" href="/">Vissza</a>
+<h1>Forma1 – Versenyzők (CRUD)</h1>
+
+<form action="/crud/add" method="POST">
+    <input type="text" name="nev" placeholder="Név" required>
+    <p></p>
+    <select name="nem" required>
+        <option value="">Válassz nemet</option>
+        <option value="Férfi">Férfi</option>
+        <option value="Nő">Nő</option>
+    </select>
+    <p></p>
+    <input type="date" name="szuldat" style="color: black;" required>
+    <p></p>
+    <input type="text" name="nemzet" placeholder="Nemzet" required>
+    <p></p>
+    <button type="submit">Hozzáadás</button>
+</form>
+
+<div class="columns">
+    <div class="column-box scroll-box">
+        <table border="1" cellpadding="8" style="width:100%;">
+            <tr>
+                <th>Azonosító</th>
+                <th>Név</th>
+                <th>Nem</th>
+                <th>Születési idő</th>
+                <th>Nemzet</th>
+                <th>Műveletek</th>
+            </tr>
+
+            <% pilota.forEach(p => { %>
+                <tr>
+                    <td><%= p.az %></td>
+                    <td><%= p.nev %></td>
+                    <td><%= p.nem %></td>
+                    <td><%= p.szuldat %></td>
+                    <td><%= p.nemzet %></td>
+                    <td>
+                        <a href="/crud/edit/<%= p.az %>">Szerkesztés</a> |
+                        <a href="/crud/delete/<%= p.az %>">Törlés</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    </div>
+</div>

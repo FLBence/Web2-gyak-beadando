@@ -12,11 +12,12 @@ const db = require("./db");
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "layout");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static("public"));
 
 // Static assets (Dimension theme)
 app.use("/assets", express.static("assets"));
 
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 const DATA_FILE = path.join(__dirname, 'users.json');
 if (!fs.existsSync(DATA_FILE)) {
@@ -172,11 +173,20 @@ app.post("/login", (req, res) => {
     const user = users.find(
         u => u.username === username && u.password === password
     );
+
     if (!user) {
         return res.status(401).send("Hibás felhasználónév vagy jelszó!");
     }
+    
+    req.session.user = {
+        id: user.id,
+        username: user.username,
+        role: user.role || "user"
+    };
+
     res.redirect("/");
 });
+
 
 // Kijelentkezés
 app.get("/logout", (req, res) => {
@@ -194,11 +204,15 @@ app.get("/uzenetek", requireLogin, (req, res) => {
 
 // Admin oldal (csak adminnak)
 app.get("/admin", requireAdmin, (req, res) => {
+    console.log(req.session.user); // itt látszik, ki van bejelentkezve
+    const users = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    console.log(users); // itt kell látnod a users tömböt
     res.render("admin", {
         user: req.session.user,
         users
     });
 });
+
 //Adatbázis oldal
 app.get("/adatbazis", (req, res) => {
     res.render("adatbazis", {
@@ -213,13 +227,79 @@ app.get("/kapcsolat", (req, res) => {
         page: "kapcsolat"
     });
 });
-//CRUD fül
+
+
+//crud belseje
 app.get("/crud", (req, res) => {
-    res.render("crud", {
-        user: req.session.user,
-        page: "crud"
+    const sql = "SELECT * FROM pilota";
+
+    db.query(sql, (err, rows) => {
+        if (err) throw err;
+
+        res.render("crud", {
+            pilota: rows
+        });
     });
 });
+
+
+app.post("/crud/add", (req, res) => {
+    const { nev, nem, szuldat, nemzet } = req.body;
+
+    const sql = "INSERT INTO pilota (nev, nem, szuldat, nemzet) VALUES (?, ?, ?, ?)";
+
+    db.query(sql, [nev, nem, szuldat, nemzet], (err) => {
+        if (err) throw err;
+        res.redirect("/crud");
+    });
+});
+
+
+app.get("/crud/edit/:az", (req, res) => {
+    const az = req.params.az;
+
+    const sql = "SELECT * FROM pilota WHERE az = ?";
+
+    db.query(sql, [az], (err, rows) => {
+        if (err) throw err;
+
+        res.render("edit", {
+            pilota: rows[0]
+        });
+    });
+});
+
+
+app.post("/crud/edit/:az", (req, res) => {
+    const az = req.params.az;
+    const { nev, nem, szuldat, nemzet } = req.body;
+
+    const sql = `
+        UPDATE pilota 
+        SET nev = ?, nem = ?, szuldat = ?, nemzet = ?
+        WHERE az = ?
+    `;
+
+    db.query(sql, [nev, nem, szuldat, nemzet, az], (err) => {
+        if (err) throw err;
+
+        res.redirect("/crud");
+    });
+});
+
+
+app.get("/crud/delete/:az", (req, res) => {
+    const az = req.params.az;
+
+    const sql = "DELETE FROM pilota WHERE az = ?";
+
+    db.query(sql, [az], (err) => {
+        if (err) throw err;
+
+        res.redirect("/crud");
+    });
+});
+
 // Server indítása
 app.listen(3000, () =>
     console.log("Szerver fut: http://localhost:3000")

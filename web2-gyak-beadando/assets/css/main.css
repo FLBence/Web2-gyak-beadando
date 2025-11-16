@@ -1735,12 +1735,13 @@ input, select, textarea {
 .columns {
     display: flex;
     gap: 20px;
-    width: 100%;
+    width: 90%;
+	font-size: 90%;
     justify-content: flex-start;
 }
 
 .column-box {
-    width: 100%;
+    width: auto;
     background: rgba(255,255,255,0.05);
     padding: 15px;
     border-radius: 10px;
@@ -1766,4 +1767,31 @@ input, select, textarea {
 .scroll-box::-webkit-scrollbar-track {
     background: #222;
 }
+th.errorcolumm, td.errorcolumm {
+    width: 50px;
+    max-width: 120px;
+    word-wrap: break-word;
+}
 
+#back {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: white;
+    transition: 0.2s;
+    display: inline-block;
+}
+
+#back:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#errorcolumm{
+	width: 100px;
+}
