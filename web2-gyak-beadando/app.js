@@ -115,12 +115,20 @@ app.get('/uzenetek', (req, res) => {
     });
 });
 
-// Főoldal
+// Alapoldal
 app.get("/", (req, res) => {
     res.render("index", {
         user: req.session.user,
         page: "index",
         });
+});
+
+// Főoldal – bemutató oldal
+app.get("/fooldal", (req, res) => {
+    res.render("fooldal", {         
+        user: req.session.user,
+        page: "fooldal"
+    });
 });
 
 // Regisztráció
